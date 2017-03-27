@@ -1,13 +1,36 @@
-use ivory_elph
-go
+use mastodonx
+--Servicio (Alistamiento * movimiento)
+	insert into servicio values ('Alistamiento')  --1
+----Rol
+	insert into rol values ('Admin') --1
+	insert into rol values ('Creator') --2
+	insert into rol values ('Tech') --3
+----Usuario	
+	insert into usuario values('González Rivera','Juan Sebastián','3197053513','juang@suppliesdc.com','123',1)
+	insert into usuario values('Prueba','Juan Creador','3157053513','juangc@suppliesdc.com','123',2)
+	insert into usuario values('Prueba','Juan Tecnico','3127053513','juangt@suppliesdc.com','123',3)
+----Cliente
+	insert into cliente values ('Supplies','SAS',null,null)  --1
+	insert into cliente values ('Blindex','Bogotá','Av 45 #54- 22','2210882') --2
+----Area
+	insert into area values ('Bogotá',1) --1 FK = 1
+	insert into area values ('Bogotá',2) --2 FK = 2
+----Contacto NIX ROBOT 
+	insert into contacto values ('nix robot','nixrobot@suppliesdec.com',1) --1
+--Encuesta 
+----Pregunta
+	insert into pregunta values('¿El servicio se atendió dentro de los tiempos establecidos?',1)
+	insert into pregunta values('¿Qué tan buena fue la atención prestada?',1)
+	insert into pregunta values('¿Se resolvió satisfactoriamente el servicio?',1)
+------Respuesta 1
+		insert into respuesta values ('Si',1)
+		insert into respuesta values ('No',1)
+------Respusta 2
+		insert into respuesta values ('Mala',2)
+		insert into respuesta values ('Buena',2)
+		insert into respuesta values ('Excelente',2)
+------Respuesta 3
+		insert into respuesta values ('Si',3)
+		insert into respuesta values ('No',3)
 
---Login
-insert into usuario values ('Pandora','Juan',487596,'juan@juan.com','juan123','master')
---Cliente
-select * from cliente
-insert into cliente values ('Blindex','Bogotá','Av 45 #54- 22','2210882','Juan','juan@juan.com','juan457')
---Area
-insert into area
---Activo
-select * from activo
-insert into activo values ('XLMR48SLO744','Dell','MO20148','I0048475','S004414','1GB de ram 500gb disco duro ','Portátil',1)
+		
