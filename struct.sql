@@ -102,11 +102,12 @@ go
 		_servicio varchar(100)
 	)
 	go
+	--alter table ticket drop column origen
 	create table ticket (
 		id_ticket int primary key identity(1,1),
 		N_Ticket int , 
 		estado char(1),
-		origen varchar(50),
+		--origen varchar(50),
 		cierre char(1),
 		fk_id_tecnico int foreign key references usuario (id_usuario),
 		fk_id_creador int foreign key references usuario (id_usuario),

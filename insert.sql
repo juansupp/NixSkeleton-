@@ -2,9 +2,9 @@ use mastodonx
 --Servicio (Alistamiento * movimiento)
 	insert into servicio values ('Alistamiento')  --1
 ----Rol
-	insert into rol values ('Admin') --1
-	insert into rol values ('Creator') --2
-	insert into rol values ('Tech') --3
+	insert into rol values (1,'Admin') --1
+	insert into rol values (2,'Creator') --2
+	insert into rol values (3,'Tech') --3
 ----Usuario	
 	insert into usuario values('González Rivera','Juan Sebastián','3197053513','juang@suppliesdc.com','123',1)
 	insert into usuario values('Prueba','Juan Creador','3157053513','juangc@suppliesdc.com','123',2)
@@ -33,4 +33,5 @@ use mastodonx
 		insert into respuesta values ('Si',3)
 		insert into respuesta values ('No',3)
 
+		
 		
