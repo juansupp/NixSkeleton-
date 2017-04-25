@@ -22,7 +22,7 @@ select distinct _empresa + ' ' +  _sede nombre, id_cliente from cliente
 go
 
 
-alter view full_activo 
+create view full_activo 
 as
 select * from activo 
 inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
@@ -43,7 +43,7 @@ select top(1) N_Ticket from ticket order by N_Ticket desc
 go
 
 
-alter  view full_ticket
+create  view full_ticket
 as
 select 
 	ticket.id_ticket id_full_ticket,
