@@ -3,13 +3,12 @@ create database mastodonx
 go
 use mastodonx
 --LOGIN
-go
+	go
 	create table rol (
 		id_rol  int primary key ,
 		_rol varchar(50)
 	) 
-go
-
+	go
 	create table usuario (
 		id_usuario int primary key identity(1,1),
 		apellido varchar(100),
@@ -28,25 +27,20 @@ go
 		direccion varchar(100),
 		telefono varchar(20)
 	)
-
 	go
-
 	create table area (
 		id_area int primary key identity(1,1),
 		nombre varchar(100),
 		fk_id_cliente int foreign key references cliente (id_cliente)
 
 	)
-
 	go
-
 	create table contacto (
 		id_contacto int primary key identity,
 		_contacto varchar(150),
 		correo varchar(100),
 		fk_id_area int foreign key references area (id_area)
 	) 
-
 --ACTIVO 
 	go
 	create table tipo_activo (
@@ -85,6 +79,7 @@ go
 		serial varchar(50),
 		inventario varchar(20),
 		seguridad varchar(20),
+		ciclo tinyint, 
 		fk_id_tipo_activo int foreign key references tipo_activo (id_tipo_activo) ,
 		fk_id_modelo int foreign key references modelo (id_modelo),
 		fk_id_contacto int foreign key references contacto (id_contacto)
@@ -102,17 +97,22 @@ go
 		_servicio varchar(100)
 	)
 	go
+	create table origen(
+		id_origen int primary key,
+		_origen varchar(50)
+	)
+	go
 	--alter table ticket drop column origen
 	create table ticket (
 		id_ticket int primary key identity(1,1),
 		N_Ticket int , 
 		estado char(1),
-		--origen varchar(50),
 		cierre char(1),
 		fk_id_tecnico int foreign key references usuario (id_usuario),
 		fk_id_creador int foreign key references usuario (id_usuario),
 		fk_id_activo int foreign key references activo (id_activo),
-		fk_id_servicio int foreign key references servicio (id_servicio)
+		fk_id_servicio int foreign key references servicio (id_servicio),
+		fk_id_origen int foreign key references origen (id_origen)
 	)
 	go 
 	create table documentacion (
@@ -161,7 +161,7 @@ go
 	)
 --
 	go
-	create table _version (
+	/*create table _version (
 		id_version int primary key identity,
 		desde date default getdate(),
 		hasta  date default null,
@@ -174,92 +174,60 @@ go
 		_key varchar(100),
 		_value varchar(100),
 		fk_id_version int foreign key references _version (id_version)
+	)*/
+--MOVIMIENTOS DE INVENTARIO (ROOT)
+	go
+	create table software(
+		id_software int primary key identity,
+		_software varchar(200),
+		descripcion varchar(max)
 	)
--- semaforo
-go 
+	go
+	create table entrega  (
+		id_entrega int primary key identity,
+		n_entrega int default null, 
+		fecha date default getdate(),	
+	)
+	go
+	create table sub_entrega (
+		id_sub_entrega  int primary key identity,
+		fk_id_activo int foreign key references activo (id_activo),
+		fk_id_entrega int foreign key references entrega (id_entrega)
+	)
+	go
+	--Conexion sub-entrega - software IMPORTANTE
+	create table licencia (
+		id_sub_entrega int primary key identity,
+		fk_id_software int foreign key references software (id_software),
+		fk_id_sub_entrega int foreign key references sub_entrega (id_sub_entrega)
+	)
+	go 
+	/*
+		TIPOS DE HISTORIAL 
 
-create table semaforo ( cantidad tinyint )
+		1. Al cambiar la placa de seguridad = PS
+		2. Al cambiar la placa de inventario = PI
+		3. Al hacer una modificaciones en las especificaciones del activo  = ME
+		4. Al realizar un ticket  = NT
+		5. Al realizar una entrega = NE
+		6. Al realizar un retiro = NR
+		7. Al modificar el software (en el alistamiento) = NS
+		8. Al realizar un asignamiento de contacto = AC
 
-go
-
---Modulo movimientos 
-
-create table entrega  (
-	id_entrega int primary key identity,
-	n_entrega int default null, 
-	fecha date default getdate(),
-	
-)
-
-go
------ FIXXER
-create table sub_orden(
-	id_sub_orden  int primary key identity,
-	fk_id_activo int foreign key references activo (id_activo)
-)
-
-
-
---/--/--NEW MOVIMIENTO
-
-use mastodonx
-go 
---MODULO MOVIMIENTOS
-
-create table software(
-	id_software int primary key identity,
-	_software varchar(200),
-	descripcion varchar(max)
-)
-
-go
-
-create table entrega  (
-	id_entrega int primary key identity,
-	n_entrega int default null, 
-	fecha date default getdate(),	
-)
-
-go
-
-create table sub_orden(
-	id_sub_orden  int primary key identity,
-	fk_id_software int foreign key references software (id_software),
-	fk_id_activo int foreign key references activo (id_activo)
-)
-
-go 
-
-/*
-	TIPOS DE HISTORIAL 
-
-	1. Al cambiar la placa de seguridad = PS
-	2. Al cambiar la placa de inventario = PI
-	3. Al hacer una modificaciones en las especificaciones del activo  = ME
-	4. Al realizar un ticket  = NT
-	5. Al realizar una entrega = NE
-	6. Al realizar un retiro = NR
-	7. Al modificar el software (en el alistamiento) = NS
-	8. Al realizar un asignamiento de contacto = AC
-
-*/
-create table hoja_vida (
-	id_hoja_vida int primary key identity,
-	_key varchar(20),
-	tipo char(2),
-	texto varchar(max) default null,
-	fecha date default getdate(),
-	hora time(0) default convert(time(0),getdate()),
-	fk_id_activo int foreign key references activo (id_activo)
-)
-
-go
-
---select  convert(time(0),getdate())
-
-/*TABLA SEMI TEMPORAL PARA ADJUNTAR LOS ACTUVIS QUE SE ESTAN ALISTANDO PARA PODER LLEVARLOS A LA ENTREGA */
-
-create table alistamiento(
-	_activo int 
-)
+	*/
+	create table hoja_vida (
+		id_hoja_vida int primary key identity,
+		_key varchar(20),
+		tipo char(2),
+		texto varchar(max) default null,
+		fecha date default getdate(),
+		hora time(0) default convert(time(0),getdate()),
+		fk_id_activo int foreign key references activo (id_activo)
+	)
+	go
+	--select  convert(time(0),getdate())
+	/*TABLA SEMI TEMPORAL PARA ADJUNTAR LOS ACTUVIS QUE SE ESTAN ALISTANDO PARA PODER LLEVARLOS A LA ENTREGA */
+	create table alistamiento(
+		_activo int 
+	)
 

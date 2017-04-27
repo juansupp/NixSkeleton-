@@ -1,6 +1,10 @@
 use mastodonx
 --Servicio (Alistamiento * movimiento)
 	insert into servicio values ('Alistamiento')  --1
+----Origen
+	insert into origen values (1,'Telefonico')
+	insert into origen values (2,'Correo')
+	insert into origen values (3,'Solicitud interna')
 ----Rol
 	insert into rol values (1,'Admin') --1
 	insert into rol values (2,'Creator') --2

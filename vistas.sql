@@ -116,6 +116,15 @@ inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
 inner join modelo on modelo.id_modelo = activo.fk_id_modelo
 inner join marca on marca.id_marca = modelo.fk_id_marca
 
+go 
+
+
+create view f_ticket 
+as
+select * from ticket
+inner join documentacion on documentacion.fk_id_ticket = ticket.id_ticket
+where estado = 'F' and tipo = 'II'
+
 -----for fix
 
 
