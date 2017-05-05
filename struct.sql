@@ -107,7 +107,7 @@ use mastodonx
 		id_ticket int primary key identity(1,1),
 		N_Ticket int , 
 		estado char(1),
-		cierre char(1),
+		cierre char(1),  -- x by default  defecto
 		fk_id_tecnico int foreign key references usuario (id_usuario),
 		fk_id_creador int foreign key references usuario (id_usuario),
 		fk_id_activo int foreign key references activo (id_activo),
@@ -197,7 +197,7 @@ use mastodonx
 	go
 	--Conexion sub-entrega - software IMPORTANTE
 	create table licencia (
-		id_sub_entrega int primary key identity,
+		id_licencia int primary key identity,
 		fk_id_software int foreign key references software (id_software),
 		fk_id_sub_entrega int foreign key references sub_entrega (id_sub_entrega)
 	)

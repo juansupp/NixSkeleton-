@@ -24,7 +24,7 @@ go
 
 create view full_activo 
 as
-select * from activo 
+select *, id_activo id_full_activo  from activo 
 inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
 inner join modelo on modelo.id_modelo = activo.fk_id_modelo
 inner join marca on marca.id_marca = modelo.fk_id_marca
@@ -64,7 +64,8 @@ select
 	ticket.estado,
 	servicio._servicio,
 	servicio.id_servicio servicio ,
-	tipo
+	tipo,
+	_tipo_activo
 from ticket
 inner join servicio on servicio.id_servicio = ticket.fk_id_servicio
 inner join usuario tecnico on tecnico.id_usuario = ticket.fk_id_tecnico 
@@ -125,6 +126,23 @@ select * from ticket
 inner join documentacion on documentacion.fk_id_ticket = ticket.id_ticket
 where estado = 'F' and tipo = 'II'
 
+
+go
+
+create view full_images 
+as 
+select ticket.id_ticket,imagen.data_image, documentacion.id_documentacion from ticket
+inner join documentacion on documentacion.fk_id_ticket = ticket.id_ticket
+inner join imagen on imagen.fk_id_documentacion = documentacion.id_documentacion
+
+go 
+
+create view full_caracteristica
+as
+select _caracteristica,_valor,id_activo,id_caracteristica, id_caracteristica_valor from caracteristica
+inner join caracteristica_valor on caracteristica_valor.fk_id_caracteristica = caracteristica.id_caracteristica
+inner join caracteristica_activo on caracteristica_activo.fk_id_caracteristica_valor = caracteristica_valor.id_caracteristica_valor
+inner join activo on activo.id_activo = caracteristica_activo.fk_id_activo
 -----for fix
 
 
@@ -154,26 +172,7 @@ go
  select * from respuesta 
 	inner join pregunta on pregunta.id_pregunta =respuesta.fk_id_pregunta
 
-go
 
-
-alter view full_images 
-as 
-select ticket.id_ticket,imagen.data_image, documentacion.id_documentacion from ticket
-inner join documentacion on documentacion.fk_id_ticket = ticket.id_ticket
-inner join imagen on imagen.fk_id_documentacion = documentacion.id_documentacion
-
-
-go 
-
-
-
-
-go
-
-
-
-go
 --select * from ticket
 
 /*select * from ticket

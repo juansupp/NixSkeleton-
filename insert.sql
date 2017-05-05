@@ -36,6 +36,12 @@ use mastodonx
 ------Respuesta 3
 		insert into respuesta values ('Si',3)
 		insert into respuesta values ('No',3)
+--Software
+	insert into software values ('Odffice 2010','sss')
+	insert into software values ('Odffice 2013','sss')
+	insert into software values ('Odffice 2016','sss')
+	insert into software values ('Photoshop','sss')
+select * from software
 
 		
 		
