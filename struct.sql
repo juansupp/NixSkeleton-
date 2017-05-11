@@ -30,7 +30,7 @@ use mastodonx
 	go
 	create table area (
 		id_area int primary key identity(1,1),
-		nombre varchar(100),
+		_area varchar(100),
 		fk_id_cliente int foreign key references cliente (id_cliente)
 
 	)
@@ -185,12 +185,22 @@ use mastodonx
 	go
 	create table entrega  (
 		id_entrega int primary key identity,
-		n_entrega int default null, 
+		n_entrega varchar(15) default null,  -- var
 		fecha date default getdate(),	
 	)
 	go
+	create table retiro (
+		id_retiro int primary key identity,
+		n_retiro varchar(15) default null,
+		fecha date default getdate()
+	)
+	go
+	--alter table sub_entrega add  estado bit
+	--alter table sub_entrega add observacion varchar(max)
 	create table sub_entrega (
 		id_sub_entrega  int primary key identity,
+		estado bit default 0, -- 0 = sub entrega recien creada(casa) 1 = sube entrega entregada(inferno) 
+		observacion varchar(max) default null,
 		fk_id_activo int foreign key references activo (id_activo),
 		fk_id_entrega int foreign key references entrega (id_entrega)
 	)

@@ -14,9 +14,9 @@ select *, usuario.nombre + '  ' + usuario.apellido _usuario  from usuario
 go
 
 
-create view full_cliente
+alter view full_cliente
 as
-select distinct _empresa + ' ' +  _sede nombre, id_cliente from cliente
+select distinct _empresa + ' ' +  _sede _cliente, id_cliente from cliente
 
 
 go
@@ -119,7 +119,7 @@ inner join marca on marca.id_marca = modelo.fk_id_marca
 
 go 
 
-
+--Tickets en espera de activo
 create view f_ticket 
 as
 select * from ticket
@@ -143,6 +143,26 @@ select _caracteristica,_valor,id_activo,id_caracteristica, id_caracteristica_val
 inner join caracteristica_valor on caracteristica_valor.fk_id_caracteristica = caracteristica.id_caracteristica
 inner join caracteristica_activo on caracteristica_activo.fk_id_caracteristica_valor = caracteristica_valor.id_caracteristica_valor
 inner join activo on activo.id_activo = caracteristica_activo.fk_id_activo
+
+go
+
+
+create view full_contacto 
+as
+select * from contacto
+inner join area on area.id_area = contacto.fk_id_area
+inner join cliente on cliente.id_cliente = area.fk_id_cliente
+
+go
+
+alter view full_sub_entrega
+as
+select *, id_activo id_full_sub_entrega from activo 
+inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
+inner join modelo on modelo.id_modelo = activo.fk_id_modelo
+inner join marca on marca.id_marca = modelo.fk_id_marca
+inner join  sub_entrega on sub_entrega.fk_id_activo  = activo.id_activo
+
 -----for fix
 
 
