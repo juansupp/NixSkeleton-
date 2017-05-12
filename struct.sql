@@ -200,9 +200,11 @@ use mastodonx
 	create table sub_entrega (
 		id_sub_entrega  int primary key identity,
 		estado bit default 0, -- 0 = sub entrega recien creada(casa) 1 = sube entrega entregada(inferno) 
-		observacion varchar(max) default null,
+		text_entrega varchar(max) default null,
+		text_retiro varchar(max) default null,
 		fk_id_activo int foreign key references activo (id_activo),
-		fk_id_entrega int foreign key references entrega (id_entrega)
+		fk_id_entrega int foreign key references entrega (id_entrega),
+		fk_id_retiro int foreign key references retiro(id_retiro)
 	)
 	go
 	--Conexion sub-entrega - software IMPORTANTE

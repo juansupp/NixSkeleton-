@@ -41,7 +41,3 @@ use mastodonx
 	insert into software values ('Odffice 2013','sss')
 	insert into software values ('Odffice 2016','sss')
 	insert into software values ('Photoshop','sss')
-select * from software
-
-		
-		
