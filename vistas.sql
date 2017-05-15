@@ -14,7 +14,7 @@ select *, usuario.nombre + '  ' + usuario.apellido _usuario  from usuario
 go
 
 
-alter view full_cliente
+create view full_cliente
 as
 select distinct _empresa + ' ' +  _sede _cliente, id_cliente from cliente
 
@@ -94,7 +94,7 @@ select  id_ticket,
         servicio._servicio servicio,
         contacto._contacto usuario_final,
 		cliente._empresa + ' ' + cliente._sede cliente, 
-		area.nombre area,
+		area._area area,
 		direccion,
 		telefono,
 		contacto.correo,
@@ -155,7 +155,7 @@ inner join cliente on cliente.id_cliente = area.fk_id_cliente
 
 go
 
-alter view full_sub_entrega
+create view full_sub_entrega
 as
 select *, id_activo id_full_sub_entrega from activo 
 inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo

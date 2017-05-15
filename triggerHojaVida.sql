@@ -23,7 +23,7 @@ create table hoja_vida (
 		4. Al realizar un ticket  = NT                                              --insert ticket
 		5. Al realizar una entrega = NE												--update sub entrega (fk)
 		6. Al realizar un retiro = NR												--insert retiro
-		7. Al modificar el licencia (en el alistamiento) = NS						--insert licencia (por cada una)
+		7. Al modificar el licencia (en el alistamiento) = NL						--insert licencia (por cada una)
 		8. Al realizar un asignamiento de contacto = AC								--
 
 	*/*/
@@ -54,17 +54,17 @@ begin
 	insert into hoja_vida 
 			(_key,tipo,texto,fk_id_activo) 
 	values 
-		(@id_licencia,'NE','Se ha agregado el software  '+ @software ,@id_activo)
+		(@id_licencia,'NL','Se ha agregado el software  '+ @software ,@id_activo)
 end
 
 go
 
-create trigger trgEntrega on sub_entrega
+alter trigger trgEntrega on sub_entrega
 after update 
 as
 begin
 	 
-	 --ENTREGA
+	 --ENTREGA -- TEST FINE 
 	if update (fk_id_entrega)
 	begin
 		
@@ -94,19 +94,19 @@ begin
 		declare 
 			@id_activo2 int , 
 			@id_retiro int, 
-			@n_entrega2 varchar(15) 
+			@n_retiro varchar(15) 
 
 		select 
 			@id_activo2 = i.fk_id_activo,
 			@id_retiro = r.id_retiro,
-			@n_entrega = r.n_retiro
+			@n_retiro = r.n_retiro
 		from inserted i 
 			inner join retiro r on r.id_retiro = i.fk_id_entrega
 
 		insert into hoja_vida 
 			(_key,tipo,texto,fk_id_activo) 
 		values 
-			(@id_retiro,'NE','se ha realizado una entrega ' + @n_entrega2   ,@id_activo2)
+			(@id_retiro,'NR','se ha realizado un retiro' + @n_retiro   ,@id_activo2)
 	end
 	
 end
@@ -114,7 +114,7 @@ end
 go
 
 create trigger trgTicket on ticket 
-after update
+after update, insert
 as
 begin
 	if update (fk_id_activo)
@@ -129,12 +129,12 @@ begin
 		insert into hoja_vida 
 			(_key,tipo,texto,fk_id_activo) 
 			values 
-			(@id_ticket,'NT','Se ha creado el ticket nº  ' + @n_ticket   ,@id_activo)
+			(@id_ticket,'NT','Se ha creado el ticket nº  ' + cast(@n_ticket as  varchar(20))   ,@id_activo)
 	end
 end
 
 go
-
+--TEST FINE 
 create trigger trgCarActivo  on caracteristica_activo
 after update, insert 
 as
@@ -165,7 +165,7 @@ begin
 end
 	
 go
-
+-- TEST FINE 
 --Cade vez que se modifica el activo
 create trigger trgActivo ON  activo
 AFTER UPDATE, INSERT
