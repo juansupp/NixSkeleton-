@@ -163,6 +163,15 @@ inner join modelo on modelo.id_modelo = activo.fk_id_modelo
 inner join marca on marca.id_marca = modelo.fk_id_marca
 inner join  sub_entrega on sub_entrega.fk_id_activo  = activo.id_activo
 
+go
+
+create view full_licencia
+as
+select s._software, a.id_activo from licencia l 
+inner join sub_entrega se on se.id_sub_entrega = l.fk_id_sub_entrega
+inner join activo a on a.id_activo = se.fk_id_activo
+inner join software s on s.id_software = l.fk_id_software
+	
 -----for fix
 
 

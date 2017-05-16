@@ -211,7 +211,7 @@ use mastodonx
 	create table licencia (
 		id_licencia int primary key identity,
 		fk_id_software int foreign key references software (id_software),
-		fk_id_sub_entrega int foreign key references sub_entrega (id_sub_entrega)
+		fk_id_sub_entrega int foreign key references sub_entrega (id_sub_entrega) on delete cascade 
 	)
 	go 
 	/*

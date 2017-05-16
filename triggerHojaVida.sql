@@ -59,7 +59,7 @@ end
 
 go
 
-alter trigger trgEntrega on sub_entrega
+create trigger trgEntrega on sub_entrega
 after update 
 as
 begin
