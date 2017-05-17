@@ -21,6 +21,7 @@ use mastodonx
 	insert into area values ('Bogotá',2) --2 FK = 2
 ----Contacto NIX ROBOT 
 	insert into contacto values ('nix robot','nixrobot@suppliesdec.com',1) --1
+	insert into contacto values ('blindex Robobt','blinde@asd.com',2) --2  
 --Encuesta 
 ----Pregunta
 	insert into pregunta values('¿El servicio se atendió dentro de los tiempos establecidos?',1)

@@ -115,6 +115,7 @@ use mastodonx
 		fk_id_origen int foreign key references origen (id_origen)
 	)
 	go 
+	--alter table documentacion add constraint delete_ticket_cascade fk_id_ticket on delete cascade 
 	create table documentacion (
 		id_documentacion int primary key identity(1,1),
 		fecha date,
@@ -122,7 +123,7 @@ use mastodonx
 		texto varchar(max),
 		tipo char(2),
 		persona varchar(200),
-		fk_id_ticket int foreign key references ticket (id_ticket)
+		fk_id_ticket int foreign key references ticket (id_ticket) on delete cascade 
 	)  
 	go
 	create table alerta (
