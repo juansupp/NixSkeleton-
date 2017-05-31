@@ -1,6 +1,6 @@
 --- TRIGGERS PARA HOJA DE VIDA DE ACTIVO 
 
-use mastodonx
+use mastodonp
 
 go 
 /*

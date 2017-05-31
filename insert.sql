@@ -1,4 +1,4 @@
-use mastodonx
+use mastodonP
 --Servicio (Alistamiento * movimiento)
 	insert into servicio values ('Alistamiento')  --1
 ----Origen
@@ -9,10 +9,12 @@ use mastodonx
 	insert into rol values (1,'Admin') --1
 	insert into rol values (2,'Creator') --2
 	insert into rol values (3,'Tech') --3
+	insert into rol values (4,'Bodega') -- 4 
+	insert into rol values (5,'MinAdmin')--5
 ----Usuario	
-	insert into usuario values('González Rivera','Juan Sebastián','3197053513','juang@suppliesdc.com','123',1)
-	insert into usuario values('Prueba','Juan Creador','3157053513','juangc@suppliesdc.com','123',2)
-	insert into usuario values('Prueba','Juan Tecnico','3127053513','juangt@suppliesdc.com','123',3)
+	--insert into usuario values('González Rivera','Juan Sebastián','3197053513','juang@suppliesdc.com','123',1)
+	--insert into usuario values('Prueba','Juan Creador','3157053513','juangc@suppliesdc.com','123',2)
+	--insert into usuario values('Prueba','Juan Tecnico','3127053513','juangt@suppliesdc.com','123',3)
 ----Cliente
 	insert into cliente values ('Supplies','SAS',null,null)  --1
 	insert into cliente values ('Blindex','Bogotá','Av 45 #54- 22','2210882') --2
@@ -37,8 +39,14 @@ use mastodonx
 ------Respuesta 3
 		insert into respuesta values ('Si',3)
 		insert into respuesta values ('No',3)
+--Tipo de contrato
+	insert into tipo_contrato values ('Renting')
+	insert into tipo_contrato values ('Venta')
+	insert into tipo_contrato values ('Comoprint')
 --Software
+/*
 	insert into software values ('Odffice 2010','sss')
 	insert into software values ('Odffice 2013','sss')
 	insert into software values ('Odffice 2016','sss')
 	insert into software values ('Photoshop','sss')
+*/

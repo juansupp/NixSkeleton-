@@ -1,6 +1,6 @@
 
 go
-use mastodonx
+use mastodonp
 go 
 
 
@@ -72,7 +72,9 @@ inner join usuario tecnico on tecnico.id_usuario = ticket.fk_id_tecnico
 inner join usuario creador on creador.id_usuario = ticket.fk_id_creador
 inner join documentacion on documentacion.fk_id_ticket = ticket.id_ticket
 inner join activo on activo.id_activo =  ticket.fk_id_activo
-inner join contacto on contacto.id_contacto = activo.fk_id_contacto
+--
+inner join contacto on contacto.id_contacto = ticket.fk_id_contacto
+--
 inner join area on area.id_area = contacto.fk_id_area
 inner join cliente on cliente.id_cliente = area.fk_id_cliente
 inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
@@ -84,39 +86,42 @@ inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
  go
 
 
- create view full_out_ticket 
-as
-select  id_ticket,
-		N_Ticket,
-        estado,
-        fecha,
-        hora,
-        servicio._servicio servicio,
-        contacto._contacto usuario_final,
-		cliente._empresa + ' ' + cliente._sede cliente, 
-		area._area area,
-		direccion,
-		telefono,
-		contacto.correo,
-		_tipo_activo activo,
-		serial,
-		marca._marca marca,
-		modelo._modelo modelo,
-		inventario,
-		seguridad ,
-	tipo
+create view full_out_ticket 
+	as
+	select  id_ticket,
+			N_Ticket,
+			estado,
+			fecha,
+			hora,
+			servicio._servicio ,
+			contacto._contacto contacto,
+			cliente._empresa + ' ' + cliente._sede cliente, 
+			area._area area,
+			direccion,
+			telefono,
+			contacto.correo,
+			_tipo_activo activo,
+			serial,
+			marca._marca marca,
+			modelo._modelo modelo,
+			inventario,
+			seguridad ,
+		tipo,
+		_origen
 
-from ticket
-inner join servicio on servicio.id_servicio = ticket.fk_id_servicio
-inner join documentacion on documentacion.fk_id_ticket = ticket.id_ticket
-inner join activo on activo.id_activo =  ticket.fk_id_activo
-inner join contacto on contacto.id_contacto = activo.fk_id_contacto
-inner join area on area.id_area = activo.fk_id_contacto
-inner join cliente on cliente.id_cliente = area.fk_id_cliente
-inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
-inner join modelo on modelo.id_modelo = activo.fk_id_modelo
-inner join marca on marca.id_marca = modelo.fk_id_marca
-
+	from ticket
+	inner join servicio on servicio.id_servicio = ticket.fk_id_servicio
+	inner join documentacion on documentacion.fk_id_ticket = ticket.id_ticket
+	inner join activo on activo.id_activo =  ticket.fk_id_activo
+	--
+	inner join contacto on contacto.id_contacto = ticket.fk_id_contacto
+	--
+	inner join area on area.id_area = activo.fk_id_contacto
+	inner join cliente on cliente.id_cliente = area.fk_id_cliente
+	inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
+	inner join modelo on modelo.id_modelo = activo.fk_id_modelo
+	inner join marca on marca.id_marca = modelo.fk_id_marca
+	inner join origen on origen.id_origen = ticket.fk_id_origen
 go 
 
 --Tickets en espera de activo
@@ -124,6 +129,7 @@ create view f_ticket
 as
 select * from ticket
 inner join documentacion on documentacion.fk_id_ticket = ticket.id_ticket
+inner join usuario tech on ticket.fk_id_tecnico = tech.id_usuario
 where estado = 'F' and tipo = 'II'
 
 
@@ -172,13 +178,21 @@ inner join sub_entrega se on se.id_sub_entrega = l.fk_id_sub_entrega
 inner join activo a on a.id_activo = se.fk_id_activo
 inner join software s on s.id_software = l.fk_id_software
 	
------for fix
+	go
 
+-- FIX WITH full_contacto view PAGINATE
+create view full_out_contacto
+as
+select *, id_contacto id_full_out_contacto from contacto c 
+inner join area a on c.fk_id_area = a.id_area
+inner join cliente cl on cl.id_cliente = a.fk_id_cliente  
+-----for fix
+/*
 
 
 go
 
-alter view tecnicos
+create view tecnicos
 as
 select 
 	usuario.apellido + ' ' + usuario.nombre nombre,
@@ -196,7 +210,7 @@ go
 
  go 
 
- alter view full_pregunta
+ create view full_pregunta
  as
  select * from respuesta 
 	inner join pregunta on pregunta.id_pregunta =respuesta.fk_id_pregunta
@@ -214,3 +228,4 @@ select * from ticket  where 1=1 order  by id_ticket offset 0 rows fetch next 10 
 
 
 
+*/

@@ -1,7 +1,7 @@
 
-create database mastodonx
+create database mastodonp
 go
-use mastodonx
+use mastodonp
 --LOGIN
 	go
 	create table rol (
@@ -32,6 +32,8 @@ use mastodonx
 		id_area int primary key identity(1,1),
 		_area varchar(100),
 		fk_id_cliente int foreign key references cliente (id_cliente)
+
+
 
 	)
 	go
@@ -92,9 +94,10 @@ use mastodonx
 	)
 --TICKET 
 	go
+	-- alter table servicio add constraint servicio_unico _servicio unique  
 	create table servicio (
 		id_servicio int primary key identity,
-		_servicio varchar(100)
+		_servicio varchar(100) 
 	)
 	go
 	create table origen(
@@ -103,6 +106,7 @@ use mastodonx
 	)
 	go
 	--alter table ticket drop column origen
+	--alter table ticket add fk_id_contacto int forign key 
 	create table ticket (
 		id_ticket int primary key identity(1,1),
 		N_Ticket int , 
@@ -112,14 +116,15 @@ use mastodonx
 		fk_id_creador int foreign key references usuario (id_usuario),
 		fk_id_activo int foreign key references activo (id_activo),
 		fk_id_servicio int foreign key references servicio (id_servicio),
-		fk_id_origen int foreign key references origen (id_origen)
+		fk_id_origen int foreign key references origen (id_origen),
+		fk_id_contacto int foreign key references contacto (id_contacto)
 	)
 	go 
 	--alter table documentacion add constraint delete_ticket_cascade fk_id_ticket on delete cascade 
 	create table documentacion (
 		id_documentacion int primary key identity(1,1),
-		fecha date,
-		hora time(0),
+		fecha date default getdate(),
+		hora time(0) default  convert(time(0),getdate()),
 		texto varchar(max),
 		tipo char(2),
 		persona varchar(200),
@@ -183,11 +188,18 @@ use mastodonx
 		_software varchar(200),
 		descripcion varchar(max)
 	)
+	go 
+	create  table tipo_contrato (
+		id_tipo_contrato int primary key identity,
+		_tipo_contrato varchar(25)
+	)
 	go
+	--alter table entrega add fk_id_tipo_contrato int foreign key references tipo_contrato (id_tipo_contrato)
 	create table entrega  (
 		id_entrega int primary key identity,
 		n_entrega varchar(15) default null,  -- var
 		fecha date default getdate(),	
+		fk_id_tipo_contrato int foreign key references tipo_contrato (id_tipo_contrato)
 	)
 	go
 	create table retiro (
@@ -238,9 +250,5 @@ use mastodonx
 		fk_id_activo int foreign key references activo (id_activo)
 	)
 	go
-	--select  convert(time(0),getdate())
-	/*TABLA SEMI TEMPORAL PARA ADJUNTAR LOS ACTUVIS QUE SE ESTAN ALISTANDO PARA PODER LLEVARLOS A LA ENTREGA */
-	create table alistamiento(
-		_activo int 
-	)
+
 
