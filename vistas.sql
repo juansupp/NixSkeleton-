@@ -35,7 +35,7 @@ inner join cliente  on cliente.id_cliente = area.fk_id_cliente
 go
 
 
-create view lastTicket 
+alter view lastTicket 
 as
 select top(1) N_Ticket from ticket order by N_Ticket desc
 
@@ -43,7 +43,7 @@ select top(1) N_Ticket from ticket order by N_Ticket desc
 go
 
 
-create  view full_ticket
+alter  view full_ticket
 as
 select 
 	ticket.id_ticket id_full_ticket,
@@ -57,7 +57,7 @@ select
 	tecnico.id_usuario tecnico,
 	
 	contacto._contacto, ---usuario final = contacto
-	servicio._servicio + ' de ' +  _tipo_activo titulo,
+	COALESCE(servicio._servicio + ' de ' +  _tipo_activo, servicio._servicio + ' sin activo asignado') titulo,
 	creador.apellido + ' ' + creador.nombre creador,
 	documentacion.fecha,
 	documentacion.hora,
@@ -71,13 +71,13 @@ inner join servicio on servicio.id_servicio = ticket.fk_id_servicio
 inner join usuario tecnico on tecnico.id_usuario = ticket.fk_id_tecnico 
 inner join usuario creador on creador.id_usuario = ticket.fk_id_creador
 inner join documentacion on documentacion.fk_id_ticket = ticket.id_ticket
-inner join activo on activo.id_activo =  ticket.fk_id_activo
+left join activo on activo.id_activo =  ticket.fk_id_activo
 --
 inner join contacto on contacto.id_contacto = ticket.fk_id_contacto
 --
 inner join area on area.id_area = contacto.fk_id_area
 inner join cliente on cliente.id_cliente = area.fk_id_cliente
-inner join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
+left join tipo_activo on tipo_activo.id_tipo_activo = activo.fk_id_tipo_activo
 -- ii tipo
 
 --select * from full_ticket where fecha <= '2017-01-31' and fecha >= '2017-01-25'
@@ -155,7 +155,7 @@ go
 
 create view full_contacto 
 as
-select * from contacto
+select id_contacto id_full_contacto,* from contacto
 inner join area on area.id_area = contacto.fk_id_area
 inner join cliente on cliente.id_cliente = area.fk_id_cliente
 
